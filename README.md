@@ -4,6 +4,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## RxJS
 
-Оптимизация стримов
+операторы в RxJS
 
-1.создаём кнопку в которой мы отписываемся от подписки на событие счётчика
+1. вызываем метод .pipe() в который помещаем оператор filter() , map() и switchMap()
