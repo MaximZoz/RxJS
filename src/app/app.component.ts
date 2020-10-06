@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,29 +8,20 @@ import { Subscription, Observable } from 'rxjs';
 })
 export class AppComponent {
   sub: Subscription; /* сюда мы складываем результаты работы метода subscribe */
-
+  stream$: Subject<number> = new Subject<
+    number /* стрим состоит из пустых типов данных */
+  >(); /* будем эмитить метод void - не будем передавать никакие данные */
+  counter = 0;
   constructor() {
-    const stream$ = new Observable((observer) => {
-      setTimeout(() => {
-        observer.next(1);
-      }, 1500);
-      setTimeout(() => {
-        observer.complete();
-      }, 2100);
-      setTimeout(() => {
-        observer.error('Что-то не так');
-      }, 2000);
-      setTimeout(() => {
-        observer.next(2);
-      }, 2500);
+    this.sub = this.stream$.subscribe((value) => {
+      console.log('subscribe', value);
     });
-    this.sub = stream$.subscribe(
-      (value) => console.log('next:', value),
-      (error) => console.log('error:', error),
-      () => console.log('complete  ')
-    );
   }
   stop() {
     this.sub.unsubscribe(); /* сдесь мы отписываемся */
+  }
+  next() {
+    this.counter++;
+    this.stream$.next(this.counter);
   }
 }
